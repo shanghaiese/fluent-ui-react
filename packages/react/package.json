@@ -13,7 +13,7 @@
     "@fluentui/react-component-ref": "^0.40.0",
     "@fluentui/react-proptypes": "^0.40.0",
     "classnames": "^2.2.5",
-    "downshift": "3.2.14",
+    "downshift": "^3.4.5",
     "fast-memoize": "^2.5.1",
     "fela": "^10.6.1",
     "fela-plugin-embedded": "^10.6.1",
