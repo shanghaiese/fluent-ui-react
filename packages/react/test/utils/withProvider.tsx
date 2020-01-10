@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper, MountRendererProps, ComponentType } from 'enzyme'
 import { ThemeProvider } from 'react-fela'
 import { felaRenderer } from 'src/utils'
 import { ThemeInput } from 'src/themes/types'
@@ -8,18 +8,30 @@ export const EmptyThemeProvider: React.FunctionComponent = ({ children }) => (
   <ThemeProvider theme={{ renderer: felaRenderer, target: document }}>{children}</ThemeProvider>
 )
 
-export const mountWithProvider = (node, options?, theme?: ThemeInput) => {
+interface AugmentedMountRendererProps extends MountRendererProps {
+  wrappingComponent: React.FunctionComponent
+}
+
+export const mountWithProvider = <C extends React.Component, P = C['props'], S = C['state']>(
+  node: React.ReactElement<P>,
+  options?: AugmentedMountRendererProps,
+  theme?: ThemeInput,
+): ReactWrapper<P, S, C> => {
   return mount(node, {
     wrappingComponent: EmptyThemeProvider,
     ...options,
   })
 }
 
-export const mountWithProviderAndGetComponent = (
-  Component,
-  elementToMount,
-  options?: {},
+export const mountWithProviderAndGetComponent = <
+  C extends React.Component,
+  P = C['props'],
+  S = C['state']
+>(
+  Component: ComponentType<P>,
+  elementToMount: React.ReactElement<P>,
+  options?: AugmentedMountRendererProps,
   theme?: ThemeInput,
-) => {
+): ReactWrapper<P, any> => {
   return mountWithProvider(elementToMount, options, theme).find(Component)
 }
